@@ -16,6 +16,8 @@ Prediction task is to determine the income level for the person represented by t
 
 
 ### Data cleaning steps:
+(see data_cleaning.ipynb)
+
 I first read in the csv files into pandas DataFrames for both the train and test sets.
 
 - Train set size: 199,523
@@ -58,6 +60,7 @@ I then followed completed the following:
 
 
 ## EDA
+(see eda.ipynb)
 
 ### Continuous Variables
 
@@ -80,18 +83,25 @@ def replace_outliers_with_means(df, column):
 
 **Correlations**
 ![corr](imgs/heatmap.png)
+
 All continuous variables except wage_per_hour are highly correlated with income
 
 
+### Categorical Variables
+Bar graphs for select categorical variables:
 
-#### Categorical Variables
 ![bargraph](imgs/bargraph1.png)
 ![bargraph](imgs/bargraph2.png)
-![bargraph](imgs/bargraph3.png)
-![bargraph](imgs/bargraph4.png)
-![bargraph](imgs/bargraph5.png)
+
 
 It looks like there are a lot of "Not in universe" and potential issues with sparsity when converting these into dummy variables. We'll include all variables for now and see how the model performs.
+
+I dummy coded the categorical variables using pd.get_dummies() and merged the continuous and categorical dataframes for modeling.
+
+
+## Model Results
+
+I started with a simplest approach -- splitting the data into train and test and modeling the data with Logistic Regression.
 
 *Initial results*
 accuracy: 0.9278436461738911

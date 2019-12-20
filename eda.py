@@ -102,17 +102,17 @@ class Visualizations():
         '''Plots Bar Graphs for Categorical Variables'''
 
         # Set up the figure
-        fig = plt.figure(figsize=(20, 20))
+        fig = plt.figure(figsize=(24, 24))
         # Plot a box plot for each feature
         for idx, column in enumerate(self.columns, 1):
             # Set up individual subplots
-            plt.subplot(int(len(self.columns) / 2 - 1),
-                        10,
+            plt.subplot(int(len(self.columns) / 2),
+                        int(len(self.columns) / 2),
                         idx)
             # Plot the boxplot on those subplots
             self.data[column].value_counts()[:20].plot(kind='barh')
             # Add a title
-            plt.title(f'Bar Graph for: {column}')
+            plt.title(f'{column}')
         # Adjust the plots location
         fig.subplots_adjust(top=0.93, wspace=0.6)
         # Clean look
