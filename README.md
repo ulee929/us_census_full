@@ -60,7 +60,12 @@ I then followed completed the following:
 ## EDA
 
 ### Continuous Variables
-(add histogram)
+
+**Distribution of continuous variables**
+![hist](imgs/hist.png)
+
+**Outlier analysis**
+![boxplot](imgs/boxplot.png)
 (add corr matrix)
 Looks like capital gains, capital losses, dividends, and weeks worked per year are highly correlated with income
 
