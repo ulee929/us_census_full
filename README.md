@@ -66,7 +66,7 @@ I then followed completed the following:
 |         | Under $50,000   | Over $50,000  |
 | ------- | --------------- | ------------- |
 | Train   | 133,424 (91.53%)| 12,352 (8.47%)|
-| Test    | 69,242 (91.80%) | 6186 (8.20%)  |
+| Test    | 69,242 (91.80%) | 6,186 (8.20%)  |
 
 
 
@@ -163,10 +163,10 @@ Performing PCA or using the `class_weight='balanced'` sklearn built-in did not i
 
 || Logistic Regression | Gradient Boosting |
 | --|--|--|
-|Accuracy| 85.79| 94.25|
-|Recall | 84.25| 93.97|
-|Precision | 88.07| 94.57|
-|RMSE |0.38| 0.24|
+|Accuracy| 85.79| 93.83|
+|Recall | 84.25| 93.33|
+|Precision | 88.07| 94.44|
+|RMSE |0.38| 0.25|
 
 ## Model Validation
 I evaluated the logistic regression and gradient boosting with SMOTE models on the unseen data.
@@ -175,7 +175,7 @@ I evaluated the logistic regression and gradient boosting with SMOTE models on t
 
 || Logistic Regression | Gradient Boosting |
 | --|--|--|
-|Accuracy| 0.85| 0.94|
+|Accuracy| 85.51| 0.94|
 |Recall | 0.85| 0.94|
 |Precision | 0.86| 0.95|
 |RMSE |0.38| 0.24|
