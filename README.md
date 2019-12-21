@@ -32,23 +32,7 @@ I then followed completed the following:
   - Dropping duplicates seems to be a critical step in data cleaning. For example, after dropping duplicates, the mean age increased from 34.49 to 40.05. This suggests that leaving duplicates in for analysis would have skewed results toward the younger population.
 3. Dropped detailed_industry_recode and detailed_occupation_recode columns since they are duplicates of major_industry_code and major_occupation_code.
 4. There were no null values for either train or test.
-5. Put education into buckets so that below 1st grade - 6th grade = up_to_6th_grade and 9th grade - 12th grade no diploma = high_school_no_graduate
-
-| Education level  | Number (train set)  |
-| --------------- | ------------- |
-|High school graduate                 |     42,206|
-| Some college but no degree           |     25,740|
-| Bachelors degree(BA AB BS)            |    19,137|
-| High school no graduate                 |   18,729|
-|Children                                 |  9,742|
-| Masters degree(MA MS MEng MEd MSW MBA)   |  6,396|
-| 7th and 8th grade                         | 5,766|
-| Up to 6th grade                      |       5,542|
-| Associates degree-occup /vocational  |      5,173|
-| Associates degree-academic program    |     4,295|
-| Prof school degree (MD DDS DVM LLB JD) |    1,789|
-| Doctorate degree(PhD EdD)               |   1,261|
-
+5. Put education into buckets so that below 1st grade - 6th grade = up_to_6th_grade and 9th grade - 12th grade no diploma = high_school_no_graduate (see bar graph below for distribution).
 6. Split income label into binary integer values.
 
 |         | Under $50,000   | Over $50,000  |
@@ -81,10 +65,23 @@ def replace_outliers_with_means(df, column):
     df[column] = np.where(df[column] > mean, mean, df[column])
 ```
 
+**Descriptive Statistics with outliers addressed**
+
+|  | age| wage_per_hour | capital_gains | capital_losses |dividends_from_stocks | num_persons_worked_for_employer |weeks_worked_in_year|
+| --- | ---- | --- |------| ------- | ------ | ----- |--------|--------|
+|count | 145776 | 145776 | 145776| 145776 |145776 | 145776 |145776 |
+|mean| 40.05| 5.88 | 29.99|1.37 | 26.69|2.65 |31.37|
+|std|19.05 | 20.28 |130.08 | 8.24 |76.02 |2.40 |23.44|
+|min |0.00| 0.00| 0.00|0.00 | 0.00 | 0.00 |0.00|
+|25%|26.00 |0.00 |0.00 | 0.00 |0.00| 0.00 |0.00|
+|50% | 38.00| 0.00| 0.00|0.00 |0.00 | 2.00 |49.00|
+|75%|52.00 |0.00 |0.00 | 0.00 |0.00| 5.00 |52.00|
+|max | 90.00|75.85| 594.89| 51.01 |268.79 |6.00 |52.00|
+
 **Correlations**
 ![corr](imgs/heatmap.png)
 
-All continuous variables except wage_per_hour are highly correlated with income
+All continuous variables except wage_per_hour are correlated with income.
 
 
 ### Categorical Variables
@@ -94,17 +91,105 @@ Bar graphs for select categorical variables:
 ![bargraph](imgs/bargraph2.png)
 
 
-It looks like there are a lot of "Not in universe" and potential issues with sparsity when converting these into dummy variables. We'll include all variables for now and see how the model performs.
+There are many "Not in universe" values and potential issues with sparsity when converting these into dummy variables. We'll include all variables for now and see how the model performs.
 
-I dummy coded the categorical variables using pd.get_dummies() and merged the continuous and categorical dataframes for modeling.
+I dummy coded the categorical variables using pd.get_dummies() and merged the continuous and categorical DataFrames for modeling.
 
 
 ## Model Results
 
-I started with a simplest approach -- splitting the data into train and test and modeling the data with Logistic Regression.
+#### Model Considerations:
+- High dimensionality
+- Large class imbalance with majority with incomes <$50,000
 
-*Initial results*
-accuracy: 0.9278436461738911
-precision: 0.6554216793596649
-recall: 0.30543324071438405
-rmse: 0.26861196824997646
+#### Model Approaches:
+1. Models chosen:
+  - Logistic Regression
+  - Ensemble Methods (Random Forest, Boosting)
+2. Approaches to address high dimensionality:
+  - PCA
+  - SMOTE
+3. Approaches to address class imbalance:
+  - SMOTE
+
+#### Metrics:
+I report accuracy, recall, precision, and RMSE. We are interested in accuracy as a metric for classification performance; however, we will also pay particular interest to recall since we may be interested in the model's ability to detect a minority class (>$50,000).
+
+I also conducted **KFolds cross validation** and examined metrics for all models.
+
+### Model Results
+I started with the simplest approach - logistic regression with a train/test split. I compared this model with the ensemble methods.
+
+**Baseline Results**
+
+|| Logistic Regression | Random Forest | Gradient Boosting | AdaBoost|
+| --|--|--|--|--|
+|Accuracy| 0.93|0.93|0.93|0.93|
+|Recall | 0.67|0.65|0.70|0.66|
+|Precision |0.36|0.32|0.35|0.35|
+|RMSE | 0.26|0.27|0.26|0.27|
+
+Performing PCA or using the `class_weight='balanced'` sklearn built-in did not improve performance. SMOTE, however, did improve recall and precision. Thus, I conducted Logistic Regression and Gradient Boosting (as they were the highest performing) with SMOTE.
+
+**SMOTE Results**
+
+|| Logistic Regression | Gradient Boosting |
+| --|--|--|
+|Accuracy| 0.86| 0.94|
+|Recall | 0.84| 0.93|
+|Precision | 0.88| 0.94|
+|RMSE |0.38| 0.25|
+
+### Validating Model
+I evaluated the logistic regression and gradient boosting with SMOTE models on the unseen data.
+
+**Model Results**
+
+|| Logistic Regression | Gradient Boosting |
+| --|--|--|
+|Accuracy| 0.85| 0.94|
+|Recall | 0.85| 0.94|
+|Precision | 0.86| 0.95|
+|RMSE |0.38| 0.24|
+
+The models perform very similarly to training and thus seem to generalize to unseen data.
+
+### Feature Importances
+
+
+## Conclusion
+
+
+## Future Steps:
+*I didn't do these because my machine the processes would have taken too long with my machine's low memory*
+
+- Remove some extraneous variables using VIF / Feature Importances
+
+**VIF Implementation Example:**
+```
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+vif = pd.DataFrame()
+vif["VIF Factor"] = [variance_inflation_factor(df_merged_learn.values, i) for i in range(df_merged_learn.shape[1])]
+vif["features"] = df_merged_learn.columns
+```
+
+- Grid Search for best parameters
+
+**Grid Search Implementation Example:**
+```
+from sklearn.model_selection import GridSearchCV
+gradient_boost_grid = {'n_estimators': [50, 100, 150, 200],
+                      'random_state': [1, None],
+                      'learning_rate': [0.1, .5, 1]}
+gdr_gridsearch = GridSearchCV(GradientBoostingClassifier(),
+                             gradient_boost_grid,
+                             n_jobs=-1,
+                             verbose=True)
+gdr_gridsearch.fit(X_train, y_train)
+
+best_gdr_model = gdr_gridsearch.best_estimator_
+best_gdr_model.fit(X_train, y_train)
+best_gdr_preds = best_gdr_model.predict(X_test)
+```
+
+- Find data from later years to see if the model still generalizes.

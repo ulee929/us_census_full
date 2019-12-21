@@ -40,11 +40,6 @@ class Analysis():
         mean = float(self.data[self.columns].mean())
         self.data[self.columns] = np.where(self.data[self.columns] > mean, mean, self.data[self.columns])
 
-    def get_dummy_vars(self):
-        '''Create dummy variables for categorical variables'''
-        df_with_dummies = pd.get_dummies(self.data.astype(str))
-        return df_with_dummies
-
 
 class Visualizations():
     '''Matplotlib and Seaborn visualizations for EDA'''
