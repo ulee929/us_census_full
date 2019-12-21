@@ -108,7 +108,7 @@ def replace_outliers_with_means(df, column):
 |75%|52.00 |0.00 |0.00 | 0.00 |0.00| 5.00 |52.00|
 |max | 90.00|75.85| 594.89| 51.01 |268.79 |6.00 |52.00|
 
-**Correlations**
+#### Correlations
 ![corr](imgs/heatmap.png)
 
 All continuous variables except wage_per_hour are correlated with income.
@@ -174,7 +174,7 @@ Performing PCA or using the `class_weight='balanced'` sklearn built-in did not i
 |RMSE |0.38| 0.25|
 
 ## Model Validation
-I evaluated the logistic regression and gradient boosting with SMOTE models on the unseen data.
+I evaluated the logistic regression and gradient boosting with SMOTE models on the unseen data (i.e., census_income_test).
 
 **Model Results**
 
@@ -193,7 +193,7 @@ The models perform very similarly to training and thus seem to generalize to uns
 These features best predict those who make more than $50,000 a year. Not surprisingly, they relate to occupation, education, age, and activity in stock market.
 
 ## Conclusion
-These results suggest that a logistic regression model and in particular a gradient boosting model with SMOTE can generalize well to unseen data -- i.e., classify income with accuracy, recall, and precision all above 94% on unseen data -- even with limited feature engineering and high dimensionality. The model should be evaluated on years past 1994 and 1995 to further validate the model.
+These results suggest that a logistic regression model and in particular a gradient boosting model with SMOTE can generalize well to unseen data -- i.e., classify income with accuracy, recall, and precision all around 94% on unseen data -- even with limited feature engineering and high dimensionality. The model should be evaluated on years past 1994 and 1995 to further validate the model.
 
 ### Future Steps:
 *I didn't do these because the processes would have taken too long with my machine's low memory*
