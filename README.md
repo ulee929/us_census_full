@@ -1,15 +1,16 @@
 # US Census Income Analysis
 
 ## Data Source:
-This data was extracted from the census bureau database found at http://www.census.gov/ftp/pub/DES/www/welcome.html
+This data was extracted from the census bureau database
 
-Donor:
+**Donor:**
 ```
 Terran Lane and Ronny Kohavi
 Data Mining and Visualization
 Silicon Graphics.
 e-mail: terran@ecn.purdue.edu, ronnyk@sgi.com for questions.
 ```
+
 The data was split into train/test in approximately 2/3, 1/3 proportions using MineSet's MIndUtil mineset-to-mlc.
 
 Prediction task is to determine the income level for the person represented by the record. Incomes have been binned at the $50K level to present a binary classification problem.
@@ -44,7 +45,7 @@ ___
 ```
 
 ## Data Cleaning
-(see data_cleaning.ipynb)
+(see ```data_cleaning.ipynb```)
 
 I first read in the csv files into pandas DataFrames for both the train and test sets.
 
@@ -72,7 +73,7 @@ I then followed completed the following:
 
 
 ## EDA
-(see eda.ipynb)
+(see ```eda.ipynb```)
 
 ### Continuous Variables
 
@@ -81,7 +82,8 @@ I then followed completed the following:
 
 Looking at the distributions of data, only age is somewhat normally distributed.
 
-**Outlier analysis**
+#### Outlier analysis
+
 ![boxplot](imgs/boxplot.png)
 
 wage_per_hour, capital_gains, capital_losses, and dividends_from_stocks have outliers.
@@ -95,8 +97,8 @@ def replace_outliers_with_means(df, column):
 
 **Descriptive Statistics with outliers addressed**
 
-|  | age| wage_per_hour | capital_gains | capital_losses |dividends_from_stocks | num_persons_worked_for_employer |weeks_worked_in_year|
-| --- | ---- | --- |------| ------- | ------ | ----- |--------|--------|
+|  | age| wage_per_hour | capital_gains | capital_losses |dividends_from_stocks | num_persons_worked_for_employer |weeks_worked_in_year |
+| --- | ---- | --- |------| ------- | ------ | ----- |--------|
 |count | 145776 | 145776 | 145776| 145776 |145776 | 145776 |145776 |
 |mean| 40.05| 5.88 | 29.99|1.37 | 26.69|2.65 |31.37|
 |std|19.05 | 20.28 |130.08 | 8.24 |76.02 |2.40 |23.44|
@@ -146,6 +148,7 @@ I report accuracy, recall, precision, and RMSE. We are interested in accuracy as
 I also conducted **KFolds cross validation** and examined metrics for all models.
 
 ### Model Results
+(see ```model.ipynb```)
 I started with the simplest approach - logistic regression with a train/test split. I compared this model with the ensemble methods.
 
 **Baseline Results**
@@ -157,7 +160,9 @@ I started with the simplest approach - logistic regression with a train/test spl
 |Precision |35.59|32.33|35.17|35.08|
 |RMSE | 0.26|0.27|0.26|0.27|
 
-Performing PCA or using the `class_weight='balanced'` sklearn built-in did not improve performance. SMOTE, however, did improve recall and precision. Thus, I conducted Logistic Regression and Gradient Boosting (as they were the highest performing) with SMOTE.
+Performing PCA or using the `class_weight='balanced'` sklearn built-in did not improve performance. KFolds cross validation did not improve performance.
+
+**SMOTE**, however, did improve recall and precision. Thus, I conducted Logistic Regression and Gradient Boosting (as they were the highest performing) with SMOTE.
 
 **SMOTE Results**
 
@@ -175,9 +180,9 @@ I evaluated the logistic regression and gradient boosting with SMOTE models on t
 
 || Logistic Regression | Gradient Boosting |
 | --|--|--|
-|Accuracy| 85.51| 0.94|
-|Recall | 0.85| 0.94|
-|Precision | 0.86| 0.95|
+|Accuracy| 85.51| 94.25|
+|Recall | 84.59| 93.97|
+|Precision | 86.84| 94.57|
 |RMSE |0.38| 0.24|
 
 The models perform very similarly to training and thus seem to generalize to unseen data.
