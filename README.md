@@ -18,10 +18,10 @@ ___
 
 ## Table of Contents
 
-**[Data Cleaning](#datacleaning)**<br>
+**[Data Cleaning](#data-cleaning)**<br>
 **[EDA](#eda)**<br>
-**[Model Results](#modelresults)**<br>
-**[Model Validation](#modelvalidation)**<br>
+**[Model Results](#model-results)**<br>
+**[Model Validation](#model-validation)**<br>
 **[Conclusion](#conclusion)**<br>
 
 ## Directory Structure
