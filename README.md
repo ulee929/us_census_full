@@ -14,12 +14,15 @@ The data was split into train/test in approximately 2/3, 1/3 proportions using M
 
 Prediction task is to determine the income level for the person represented by the record. Incomes have been binned at the $50K level to present a binary classification problem.
 
-##Table of Contents
-Data Cleaning
-EDA
-Model Results
-Model Validation
-Conclusion
+___
+
+## Table of Contents
+
+**[Data Cleaning](#datacleaning)**<br>
+**[EDA](#eda)**<br>
+**[Model Results](#modelresults)**<br>
+**[Model Validation](#modelvalidation)**<br>
+**[Conclusion](#conclusion)**<br>
 
 ## Directory Structure
 ```
