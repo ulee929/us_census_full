@@ -14,8 +14,33 @@ The data was split into train/test in approximately 2/3, 1/3 proportions using M
 
 Prediction task is to determine the income level for the person represented by the record. Incomes have been binned at the $50K level to present a binary classification problem.
 
+##Table of Contents
+Data Cleaning
+EDA
+Model Results
+Model Validation
+Conclusion
 
-### Data cleaning steps:
+## Directory Structure
+```
+.
+│   README.md
+│   data_cleaning.ipynb    
+│   eda.ipynb
+|   model.ipynb
+|
+└───data
+│   │   df_merged_learn.pkl
+│   │   df_merged_test.pkl
+│   │
+└───imgs
+|
+└───src
+│   │   eda.py
+│   │   model.py
+```
+
+## Data Cleaning
 (see data_cleaning.ipynb)
 
 I first read in the csv files into pandas DataFrames for both the train and test sets.
@@ -124,9 +149,9 @@ I started with the simplest approach - logistic regression with a train/test spl
 
 || Logistic Regression | Random Forest | Gradient Boosting | AdaBoost|
 | --|--|--|--|--|
-|Accuracy| 0.93|0.93|0.93|0.93|
-|Recall | 0.67|0.65|0.70|0.66|
-|Precision |0.36|0.32|0.35|0.35|
+|Accuracy| 92.99|92.67|93.12|92.90|
+|Recall | 67.45|64.81|**69.88**|66.49|
+|Precision |35.59|32.33|35.17|35.08|
 |RMSE | 0.26|0.27|0.26|0.27|
 
 Performing PCA or using the `class_weight='balanced'` sklearn built-in did not improve performance. SMOTE, however, did improve recall and precision. Thus, I conducted Logistic Regression and Gradient Boosting (as they were the highest performing) with SMOTE.
@@ -135,12 +160,12 @@ Performing PCA or using the `class_weight='balanced'` sklearn built-in did not i
 
 || Logistic Regression | Gradient Boosting |
 | --|--|--|
-|Accuracy| 0.86| 0.94|
-|Recall | 0.84| 0.93|
-|Precision | 0.88| 0.94|
-|RMSE |0.38| 0.25|
+|Accuracy| 85.79| 94.25|
+|Recall | 84.25| 93.97|
+|Precision | 88.07| 94.57|
+|RMSE |0.38| 0.24|
 
-### Validating Model
+## Model Validation
 I evaluated the logistic regression and gradient boosting with SMOTE models on the unseen data.
 
 **Model Results**
@@ -155,13 +180,15 @@ I evaluated the logistic regression and gradient boosting with SMOTE models on t
 The models perform very similarly to training and thus seem to generalize to unseen data.
 
 ### Feature Importances
+![feat](imgs/feat_importances.png)
 
+These features best predict those who make more than $50,000 a year. Not surprisingly, they relate to occupation, education, age, and activity in stock market.
 
 ## Conclusion
+These results suggest that a logistic regression model and in particular a gradient boosting model with SMOTE can generalize well to unseen data -- i.e., classify income with accuracy, recall, and precision all above 94% on unseen data -- even with limited feature engineering and high dimensionality. The model should be evaluated on years past 1994 and 1995 to further validate the model.
 
-
-## Future Steps:
-*I didn't do these because my machine the processes would have taken too long with my machine's low memory*
+### Future Steps:
+*I didn't do these because the processes would have taken too long with my machine's low memory*
 
 - Remove some extraneous variables using VIF / Feature Importances
 
@@ -191,5 +218,3 @@ best_gdr_model = gdr_gridsearch.best_estimator_
 best_gdr_model.fit(X_train, y_train)
 best_gdr_preds = best_gdr_model.predict(X_test)
 ```
-
-- Find data from later years to see if the model still generalizes.
