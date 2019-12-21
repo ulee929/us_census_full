@@ -149,6 +149,7 @@ I also conducted **KFolds cross validation** and examined metrics for all models
 
 ### Model Results
 (see ```model.ipynb```)
+
 I started with the simplest approach - logistic regression with a train/test split. I compared this model with the ensemble methods.
 
 **Baseline Results**
