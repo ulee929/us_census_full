@@ -42,6 +42,7 @@ ___
 └───src
 │   │   eda.py
 │   │   model.py
+|   |
 ```
 
 ## Data Cleaning
@@ -69,7 +70,20 @@ I then followed completed the following:
 | Train   | 133,424 (91.53%)| 12,352 (8.47%)|
 | Test    | 69,242 (91.80%) | 6,186 (8.20%)  |
 
+*Update as of January 3, 2020*
 
+I ran these analyses again after removing data points of age < 18. While some teenagers make income, examining only adults above the age of 18 may improve prediction ability.
+
+This reduced the dataset sizes:
+- Train set size: 130,741
+- Test set size: 66,918
+
+|         | Under $50,000   | Over $50,000  |
+| ------- | --------------- | ------------- |
+| Train   | 118,391 (90.55%)|12,350 (9.45%)|
+| Test    | 60,732 (90.76%)| 6,186 (9.24%)|
+
+The number of those making over $50,000 did not change (or change much) after removing individuals under 18.
 
 
 ## EDA
@@ -81,6 +95,10 @@ I then followed completed the following:
 ![hist](imgs/hist.png)
 
 Looking at the distributions of data, only age is somewhat normally distributed.
+
+**Over 18**
+![hist](imgs/hist_over18.png)
+Age is now slightly skewed. Otherwise the distributions look similar for the other variables.
 
 #### Outlier analysis
 
@@ -113,6 +131,10 @@ def replace_outliers_with_means(df, column):
 
 All continuous variables except wage_per_hour are correlated with income.
 
+**Heatmap over 18**
+![corr](imgs/heatmap_over18.png)
+
+All continuous variables except wage_per_hour, num_persons_worked_for_employer, and weeks_worked_in_year are correlated with income.
 
 ### Categorical Variables
 Bar graphs for select categorical variables:
@@ -188,6 +210,10 @@ I evaluated the logistic regression and gradient boosting with SMOTE models on t
 
 The models perform very similarly to training and thus seem to generalize to unseen data.
 
+**Model Results for Over 18**
+Initial results with logistic regression were lower for accuracy (92.40 vs 92.99) and higher for recall (70.25 vs 67.45) and precision (37.02 vs 35.59). Implementing SMOTE did not improve performance compared to using the full dataset.
+
+
 ### Feature Importances
 ![feat](imgs/feat_importances.png)
 
@@ -196,8 +222,10 @@ These features best predict those who make more than $50,000 a year. Not surpris
 ## Conclusion
 These results suggest that a logistic regression model and in particular a gradient boosting model with SMOTE can generalize well to unseen data -- i.e., classify income with accuracy, recall, and precision all around 94% on unseen data -- even with limited feature engineering and high dimensionality. The model should be evaluated on years past 1994 and 1995 to further validate the model.
 
+
+
 ### Future Steps:
-*I didn't do these because the processes would have taken too long with my machine's low memory*
+*I didn't do these because the processes would have taken too long with my machine's memory*
 
 - Remove some extraneous variables using VIF / Feature Importances
 
