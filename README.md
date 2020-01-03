@@ -42,7 +42,7 @@ ___
 └───src
 │   │   eda.py
 │   │   model.py
-|   |
+│   │
 ```
 
 ## Data Cleaning
@@ -72,7 +72,7 @@ I then followed completed the following:
 
 *Update as of January 3, 2020*
 
-I ran these analyses again after removing data points of age < 18. While some teenagers make income, examining only adults above the age of 18 may improve prediction ability.
+I ran these analyses again after removing data points of age < 18. While some teenagers make income, examining only adults above the age of 18 may improve prediction ability. Mean age increased to 43.71 (sd=17.15).
 
 This reduced the dataset sizes:
 - Train set size: 130,741
@@ -211,7 +211,8 @@ I evaluated the logistic regression and gradient boosting with SMOTE models on t
 The models perform very similarly to training and thus seem to generalize to unseen data.
 
 **Model Results for Over 18**
-Initial results with logistic regression were lower for accuracy (92.40 vs 92.99) and higher for recall (70.25 vs 67.45) and precision (37.02 vs 35.59). Implementing SMOTE did not improve performance compared to using the full dataset.
+
+Initial results with logistic regression were lower for accuracy (92.40 vs 92.99) and higher for recall (70.25 vs 67.45) and precision (37.02 vs 35.59). Implementing SMOTE did not improve performance compared to using the full dataset (for train eval or test).
 
 
 ### Feature Importances
